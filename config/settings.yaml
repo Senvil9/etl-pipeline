@@ -1,19 +1,30 @@
 run:
   batch_size: 500
-  max_retries: 5
-  backoff_seconds: 2
-  target_table: public.customers_stg
+
 sources:
-  file:
-    path: "/data/input/customers.csv"
-    fmt: "csv"
   api:
-    endpoint: "/launches"
+    base_url: "https://reqres.in/api"
+    endpoint: "/users"
     page_param: "page"
-    per_page_param: "limit"
-    per_page: 100
+    per_page_param: "per_page"
+    per_page: 6            # reqres.in max page size
+    data_key: "data"
+    rate_limit_per_sec: 5.0
+
+  file:
+    path: "data/users.csv"
+    fmt: "csv"
+
   db:
-    query: "SELECT * from public.customers where updated_at >= :since LIMIT :limit OFFSET :offset"
+    query: >
+      SELECT user_id, email, first_name, last_name, avatar, created_at
+      FROM raw_schema.users
+      WHERE created_at >= :since
+      LIMIT :limit OFFSET :offset
+    chunk_size: 500
+
 load:
-  mode: "upsert"
-  key_column: ["customer_id"]
+  api_target_table: "staging_schema.users"
+  db_target_table:  "staging_schema.users"
+  csv_target_table: "raw_schema.users"
+  key_columns: ["user_id"]

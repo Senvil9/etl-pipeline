@@ -1,12 +1,17 @@
 version: 1
+disable_existing_loggers: false
+
 formatters:
   json:
     format: '{"t":"%(asctime)s","l":"%(levelname)s","m":"%(message)s","n":"%(name)s"}'
+    datefmt: "%Y-%m-%dT%H:%M:%SZ"
 handlers:
   console:
     class: Logging.StreamHandler
     formatter: json
-    level: INFO
+    level: DEBUG
+    steam: ext://sys.stdout
+    
 root:
   handlers: [console]
   level: INFO
