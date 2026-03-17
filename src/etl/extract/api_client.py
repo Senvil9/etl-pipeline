@@ -10,7 +10,7 @@ class ApiClient:
         # reqres.in uses x-api-key header
         self.session.headers.update({"x-api-key": token})
         self.min_interval = 1.0 / rate_limit_per_sec
-        self.last = 0.0
+        self._last_call: float = 0.0
 
     #---------------------------------------------------------------------------------
     # Internal helpers
@@ -19,7 +19,7 @@ class ApiClient:
     def _throttle(self) -> None:
         """Enfore rate limit between consecutive requests."""
         elapsed = time.monotonic() - self._last_call
-        if elapsed > self.min_interval:
+        if elapsed < self.min_interval:
             time.sleep(self.min_interval - elapsed)
         self._last_call = time.monotonic()
         

@@ -8,7 +8,7 @@ class User(BaseModel):
     Canonical user model shared across all three pipelines.
     All transformations are applied here via vaildators
     """
-    user_id: str
+    user_id: int
     email: str
     first_name: str
     last_name: str

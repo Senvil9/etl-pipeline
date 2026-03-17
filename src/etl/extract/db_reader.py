@@ -22,7 +22,7 @@ def read_in_chunks(dsn: str, sql: str, since: datetime, chunk_size: int = 500) -
                 text(sql), 
                 {"since": since, "limit": chunk_size, "offset": offset}
                 ).mappings().all()
-        if not rows
+        if not rows:
             log.info("DB extract complete -  no more rows at offset %d", offset)
             break
         log.info("DB chunk: offset=%d rows=%d", offset, len(rows))

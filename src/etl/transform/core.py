@@ -3,6 +3,7 @@ import logging
 from typing import Iterable
 from pydantic import ValidationError
 from etl.models import User
+import pandas as pd
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +40,7 @@ def normalize_users(
             "email":    raw.get("email") or "",
             "first_name": raw.get("first_name") or "",
             "last_name": raw.get("last_name") or "",
-            "avater": raw.get("avater"),
+            "avatar": raw.get("avatar") if pd.notna(raw.get("avatar")) else None,
         }
 
         try:

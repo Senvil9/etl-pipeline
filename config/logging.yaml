@@ -7,10 +7,10 @@ formatters:
     datefmt: "%Y-%m-%dT%H:%M:%SZ"
 handlers:
   console:
-    class: Logging.StreamHandler
+    class: logging.StreamHandler
     formatter: json
     level: DEBUG
-    steam: ext://sys.stdout
+    stream: ext://sys.stdout
     
 root:
   handlers: [console]
